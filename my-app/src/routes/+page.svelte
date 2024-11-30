@@ -1,177 +1,103 @@
 <script>
-    
+    import { onMount } from 'svelte';
 
-function zmena(cislo) {
-    switch(cislo) {
-        case 1:
-            document.getElementById("1.A").disabled = true;
-            document.getElementById("2.A").disabled = false;
-            document.getElementById("3.A").disabled = false;
-            document.getElementById("4.A").disabled = false;
-            document.getElementById("5.A").disabled = false;
-            break;
-        case 2:
-            document.getElementById("1.A").disabled = false;
-            document.getElementById("2.A").disabled = true;
-            document.getElementById("3.A").disabled = false;
-            document.getElementById("4.A").disabled = false;
-            document.getElementById("5.A").disabled = false;
-            break;
-        case 3:
-            document.getElementById("1.A").disabled = false;
-            document.getElementById("2.A").disabled = false;
-            document.getElementById("3.A").disabled = true;
-            document.getElementById("4.A").disabled = false;
-            document.getElementById("5.A").disabled = false;
-            break;
-        case 4:
-            document.getElementById("1.A").disabled = false;
-            document.getElementById("2.A").disabled = false;
-            document.getElementById("3.A").disabled = false;
-            document.getElementById("4.A").disabled = true;
-            document.getElementById("5.A").disabled = false;
-            break;
-        case 5:
-            document.getElementById("1.A").disabled = false;
-            document.getElementById("2.A").disabled = false;
-            document.getElementById("3.A").disabled = false;
-            document.getElementById("4.A").disabled = false;
-            document.getElementById("5.A").disabled = true;
-            break;
+    let selectedClass = 1; // Ukládá aktuálně vybranou třídu
+    let subjects = ["Matematika", "Angličtina", "Fyzika", "Český jazyk", "Dějepis", "Biologie", "Geografie", "Hudební výchova", "Tělesná výchova", "Informatika", "Volno"];
+    let showForm = false;
+    let currentSubject = '';
+    let selectedCell = null;
+
+    function zmena(cislo) {
+        selectedClass = cislo;
     }
-}
 
-function save() {
-    const student = document.getElementById("studentSelect").value;
-    const subject = document.getElementById("subjectSelect").value;
-    
-}
+    function otevrit(tdElement) {
+        currentSubject = tdElement.innerText;
+        selectedCell = tdElement;
+        showForm = true;
+    }
 
-let aktualniTdElement;
+    function savef() {
+        if (selectedCell) {
+            selectedCell.innerText = currentSubject;
+            selectedCell.style.backgroundColor = 'pink';
+        }
+        closeForm();
+    }
 
-function otevrit(tdElement) {
-    aktualniTdElement = tdElement;
-    document.getElementById('form').style.display = 'flex';
-}
-
-function savef() {
-    const selectElement = document.getElementById("subjectSelect");
-    const selectedValue = selectElement.value;
-    aktualniTdElement.innerHTML = selectedValue;
-    aktualniTdElement.style.backgroundColor = 'pink';
-    document.getElementById('form').style.display = 'none';
-
-}
-
-function closeForm(){
-    document.getElementById('form').style.display = 'none';
-}
+    function closeForm() {
+        showForm = false;
+    }
 </script>
 
-
 <main>
-<div id="rozvrhstr">
-
-    <!-- Výběr třídy -->
-    <div id="tridy">
-        <button class="navbutton" onclick={() => zmena(1)}>1.A</button>
-        <button class="navbutton" onclick={() => zmena(2)}>2.A</button>
-        <button class="navbutton" onclick={() => zmena(3)}>3.A</button>
-        <button class="navbutton" onclick={() => zmena(4)}>4.A</button>
-        <button class="navbutton" onclick={() => zmena(5)}>5.A</button>
-    </div>
-
-    <!-- Rozvrh tříd -->
-    <div id="rozvrh">
-    <table>
-        <thead>
-            <tr>
-                <th>Čas</th>
-                <th>Pondělí</th>
-                <th>Úterý</th>
-                <th>Středa</th>
-                <th>Čtvrtek</th>
-                <th>Pátek</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>8:00 - 9:00</td>
-                <td onclick="{() => otevrit('Matematika')}">Matematika</td>
-                <td onclick="{() => otevrit('Angličtina')}">Angličtina</td>
-                <td onclick="{() => otevrit('Fyzika')}">Fyzika</td>
-                <td onclick="{() => otevrit('Český jazyk')}">Český jazyk</td>
-                <td onclick="{() => otevrit('Dějepis')}">Dějepis</td>
-            </tr>
-            <tr>
-                <td>9:10 - 10:10</td>
-                <td onclick="{() => otevrit('Biologie')}">Biologie</td>
-                <td onclick="{() => otevrit('Matematika')}">Matematika</td>
-                <td onclick="{() => otevrit('Angličtina')}">Angličtina</td>
-                <td onclick="{() => otevrit('Geografie')}">Geografie</td>
-                <td onclick="{() => otevrit('Fyzika')}">Fyzika</td>
-            </tr>
-            <tr>
-                <td>10:20 - 11:20</td>
-                <td onclick="{() => otevrit('Český jazyk')}">Český jazyk</td>
-                <td onclick="{() => otevrit('Biologie')}">Biologie</td>
-                <td onclick="{() => otevrit('Dějepis')}">Dějepis</td>
-                <td onclick="{() => otevrit('Matematika')}">Matematika</td>
-                <td onclick="{() => otevrit('Hudební výchova')}">Hudební výchova</td>
-            </tr>
-            <tr>
-                <td>11:30 - 12:30</td>
-                <td onclick="{() => otevrit('Geografie')}">Geografie</td>
-                <td onclick="{() => otevrit('Fyzika')}">Fyzika</td>
-                <td onclick="{() => otevrit('Angličtina')}">Angličtina</td>
-                <td onclick="{() => otevrit('Biologie')}">Biologie</td>
-                <td onclick="{() => otevrit('Tělesná výchova')}">Tělesná výchova</td>
-            </tr>
-            <tr>
-                <td>12:40 - 13:40</td>
-                <td onclick="{() => otevrit('Informatika')}">Informatika</td>
-                <td onclick="{() => otevrit('Český jazyk')}">Český jazyk</td>
-                <td onclick="{() => otevrit('Hudební výchova')}">Hudební výchova</td>
-                <td onclick="{() => otevrit('Angličtina')}">Angličtina</td>
-                <td onclick="{() => otevrit('Matematika')}">Matematika</td>
-            </tr>
-        </tbody>
-    </table>
-        
-    </div>
-
-    <!-- Změna v rozvrhu-->
-    <div id="form">
-        <div class="form-group">
-            <label for="subjectSelect">Vyberte Předmět:</label>
-            <select id="subjectSelect">
-                <option value="Matematika">Matematika</option>
-                <option value="Angličtina">Angličtina</option>
-                <option value="Fyzika">Fyzika</option>
-                <option value="Český jazyk">Český jazyk</option>
-                <option value="Dějepis">Dějepis</option>
-                <option value="Biologie">Biologie</option>
-                <option value="Geografie">Geografie</option>
-                <option value="Hudební výchova">Hudební výchova</option>
-                <option value="Tělesná výchova">Tělesná výchova</option>
-                <option value="Informatika">Informatika</option>
-                <option value="Volno">Volno</option>
-            </select>
+    <div id="rozvrhstr">
+        <!-- Výběr třídy -->
+        <div id="tridy">
+            {#each Array(5) as _, i}
+                <button 
+                    class="navbutton" 
+                    onclick={() => zmena(i + 1)} 
+                    disabled={selectedClass === i + 1}>
+                    {i + 1}.A
+                </button>
+            {/each}
         </div>
 
-        <div class="form-group">
-            <button id="saveButton" onclick="{() => save}">Uložit</button>
+        <!-- Rozvrh tříd -->
+        <div id="rozvrh">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Čas</th>
+                        <th>Pondělí</th>
+                        <th>Úterý</th>
+                        <th>Středa</th>
+                        <th>Čtvrtek</th>
+                        <th>Pátek</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {#each Array(5) as _, rowIndex}
+                        <tr>
+                            <td>{8 + rowIndex}:00 - {9 + rowIndex}:00</td>
+                            {#each Array(5) as _}
+                                <td onclick={(e) => otevrit(e.target)}>
+                                    Předmět 
+                                </td>
+                            {/each}
+                        </tr>
+                    {/each}
+                </tbody>
+            </table>
         </div>
 
-        <div class="form-group">
-            <button id="closeButton" onclick="{() => closeForm}">Zavřít</button>
-        </div>
+        <!-- Změna v rozvrhu -->
+        {#if showForm}
+            <div id="form">
+                <div class="form-group">
+                    <label for="subjectSelect">Vyberte Předmět:</label>
+                    <select id="subjectSelect" bind:value={currentSubject}>
+                        {#each subjects as subject}
+                            <option value={subject}>{subject}</option>
+                        {/each}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <button id="saveButton" onclick={savef}>Uložit</button>
+                </div>
+
+                <div class="form-group">
+                    <button id="closeButton" onclick={closeForm}>Zavřít</button>
+                </div>
+            </div>
+        {/if}
     </div>
-</div>
 </main>
 
-
 <style>
+    /* Stylování zůstává stejné jako původní */
     .navbutton:disabled {
         box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
         background-color: #e0e0e0;
@@ -194,14 +120,14 @@ function closeForm(){
     .navbutton:hover:not(:disabled) {
         background-color: #0056b3;
     }
-    
+
     main {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
     }
-    
+
     #rozvrhstr {
         display: flex;
         justify-content: center;
@@ -211,21 +137,19 @@ function closeForm(){
         gap: 15px;
     }
 
-    #tridy{ 
+    #tridy {
         width: 90%;
-        max-width: 900px;  
-        border: 1px solid #ddd; 
-        border-radius: 5px; 
-        box-shadow: rgba(50, 50, 93, 0.1) 0px 4px 6px -2px, rgba(0, 0, 0, 0.1) 0px 2px 4px -2px; 
-        background-color: #fff; 
+        max-width: 900px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: rgba(50, 50, 93, 0.1) 0px 4px 6px -2px, rgba(0, 0, 0, 0.1) 0px 2px 4px -2px;
+        background-color: #fff;
         display: flex;
         justify-content: space-around;
         align-items: center;
         padding: 10px;
         gap: 10px;
     }
-
-    
 
     table {
         width: 100%;
@@ -238,7 +162,7 @@ function closeForm(){
 
     th, td {
         border: 1px solid #ddd;
-        padding: 8px;
+        padding: 20px;
         text-align: center;
     }
 
@@ -255,20 +179,19 @@ function closeForm(){
         background-color: #ddd;
     }
 
-    td:hover{
+    td:hover {
         background-color: #77899d;
     }
 
-
-    #form{
+    #form {
         position: absolute;
-        display: none;
+        display: flex;
         width: 90%;
-        max-width: 300px;  
-        border: 1px solid #ddd; 
-        border-radius: 5px; 
-        box-shadow: rgba(50, 50, 93, 0.1) 0px 4px 6px -2px, rgba(0, 0, 0, 0.1) 0px 2px 4px -2px; 
-        background-color: #fff; 
+        max-width: 300px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: rgba(50, 50, 93, 0.1) 0px 4px 6px -2px, rgba(0, 0, 0, 0.1) 0px 2px 4px -2px;
+        background-color: #fff;
         flex-direction: column;
         justify-content: space-around;
         align-items: center;

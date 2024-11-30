@@ -35,14 +35,14 @@
         <p class="logotext">EduPortal</p>
     </div>    
     <nav>
-        <button type="disable" class="navbutton" id="rozvrh" onclick={() => zavrit(1)}>Rozvrh</button>
-        <button  id="znamky" class="navbutton" onclick={() => zavrit(2)}>Známky</button>
-        <button  id="absence" class="navbutton" onclick={() => zavrit(3)}>Absence</button>
+        <a class="navbutton" id="rozvrh"  href="/">Rozvrh</a>
+        <a  id="znamky" class="navbutton" >Známky</a>
+        <a  id="absence" class="navbutton" href="/absence">Absence</a>
     </nav>
 </header>
 
 <style>
-    header {
+header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -73,12 +73,6 @@ nav {
     gap: 15px;
 }
 
-.navbutton:disabled {
-    box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
-    background-color: #e0e0e0;
-    color: #999;
-    cursor: not-allowed;
-}
 
 .navbutton {
     height: 40px;
@@ -89,6 +83,8 @@ nav {
     border-radius: 5px;
     padding: 0 20px;
     cursor: pointer;
+    text-align: center;
+    text-decoration: none;
     transition: background-color 0.3s ease;
 }
 
