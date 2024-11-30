@@ -37,7 +37,7 @@
             {#each Array(5) as _, i}
                 <button 
                     class="navbutton" 
-                    onclick={() => zmena(i + 1)} 
+                    on:click={() => zmena(i + 1)} 
                     disabled={selectedClass === i + 1}>
                     {i + 1}.A
                 </button>
@@ -61,9 +61,9 @@
                     {#each Array(5) as _, rowIndex}
                         <tr>
                             <td>{8 + rowIndex}:00 - {9 + rowIndex}:00</td>
-                            {#each Array(5) as _}
-                                <td onclick={(e) => otevrit(e.target)}>
-                                    Předmět 
+                            {#each Array(5) as _, colIndex}
+                                <td on:click={(e) => otevrit(e.target)}>
+                                    Předmět
                                 </td>
                             {/each}
                         </tr>
@@ -85,11 +85,11 @@
                 </div>
 
                 <div class="form-group">
-                    <button id="saveButton" onclick={savef}>Uložit</button>
+                    <button id="saveButton" on:click={savef}>Uložit</button>
                 </div>
 
                 <div class="form-group">
-                    <button id="closeButton" onclick={closeForm}>Zavřít</button>
+                    <button id="closeButton" on:click={closeForm}>Zavřít</button>
                 </div>
             </div>
         {/if}
@@ -125,7 +125,7 @@
         font-family: Arial, sans-serif;
         margin: 0;
         padding: 0;
-        background-color: #f4f4f4;
+        
     }
 
     #rozvrhstr {

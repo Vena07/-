@@ -5,8 +5,8 @@
     let studentSelected = "Jan Novák";
     let absenceFormVisible = false;
     let absenceTable = [
-        { date: "2024-11-06", hour: "10:00 - 11:00", excused: true },
-        { date: "2024-11-06", hour: "11:00 - 12:00", excused: false }
+        { date: "2024-11-06", duvod: "Nemoc", excused: true },
+        { date: "2024-11-06", duvod: "Lekař", excused: false }
     ];
 
     function otevritAbsenciForm() {
@@ -17,8 +17,8 @@
         absenceFormVisible = false;
     }
 
-    function pridatAbsenci(date, hour, isExcused) {
-        absenceTable.push({ date, hour, excused: isExcused });
+    function pridatAbsenci(date, duvod, isExcused) {
+        absenceTable = [...absenceTable, { date, duvod, excused: isExcused }];
         zavritAbsenci();
     }
 
@@ -27,82 +27,78 @@
     let isExcused = false;
 </script>
 
-
-
 <main>
-<div class="container">
-    <!-- Výběr třídy -->
-    <div>
-        <label for="classSelect">Vyberte Třídu:</label>
-        <select id="classSelect" bind:value={classSelected}>
-            <option value="1.A">1.A</option>
-            <option value="2.A">2.A</option>
-            <option value="3.A">3.A</option>
-            <option value="4.A">4.A</option>
-            <option value="5.A">5.A</option>
-        </select>
+    <div class="container">
+        <div>
+            <label for="classSelect">Vyberte Třídu:</label>
+            <select id="classSelect" bind:value={classSelected}>
+                <option value="1.A">1.A</option>
+                <option value="2.A">2.A</option>
+                <option value="3.A">3.A</option>
+                <option value="4.A">4.A</option>
+                <option value="5.A">5.A</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="studentSelect">Vyberte Studenta:</label>
+            <select id="studentSelect" bind:value={studentSelected}>
+                <option value="Jan Novák">Jan Novák</option>
+                <option value="Anna Dvořáková">Anna Dvořáková</option>
+                <option value="Petra Svobodová">Petra Svobodová</option>
+                <option value="Martin Procházka">Martin Procházka</option>
+                <option value="Lukáš Veselý">Lukáš Veselý</option>
+            </select>
+        </div>
+
+        <button class="btn" onclick={otevritAbsenciForm}>Přidat Absenci</button>
     </div>
 
-    <!-- Výběr studenta -->
-    <div>
-        <label for="studentSelect">Vyberte Studenta:</label>
-        <select id="studentSelect" bind:value={studentSelected}>
-            <option value="Jan Novák">Jan Novák</option>
-            <option value="Anna Dvořáková">Anna Dvořáková</option>
-            <option value="Petra Svobodová">Petra Svobodová</option>
-            <option value="Martin Procházka">Martin Procházka</option>
-            <option value="Lukáš Veselý">Lukáš Veselý</option>
-        </select>
+    <div class="table-container">
+        <table id="absenceTable">
+            <thead>
+                <tr>
+                    <th>Čas</th>
+                    <th>Omluvená</th>
+                </tr>
+            </thead>
+            <tbody>
+                {#each absenceTable as { date, duvod, excused }}
+                    <tr>
+                        <td>{date} | {duvod}</td>
+                        <td class={excused ? "absence-green" : "absence-red"}>
+                            {excused ? "Omluvená" : "Neomluvená"}
+                        </td>
+                    </tr>
+                {/each}
+            </tbody>
+        </table>
     </div>
 
-    <!-- Přidat absenci -->
-    <button class="btn" on:click={otevritAbsenciForm}>Přidat Absenci</button>
-</div>
+    <div class="modal" style="display: {absenceFormVisible ? 'flex' : 'none'}">
+        <label for="absenceDate">Datum:</label>
+        <input type="date" id="absenceDate" bind:value={absenceDate}>
 
-<div class="table-container">
-    <table id="absenceTable">
-        <thead>
-        <tr>
-            <th>Čas</th>
-            <th>Omluvená</th>
-        </tr>
-        </thead>
-        <tbody>
-        {#each absenceTable as { date, hour, excused }}
-        <tr>
-            <td>{date} | {hour}</td>
-            <td class={excused ? "absence-green" : "absence-red"}>
-                {excused ? "Omluvená" : "Neomluvená"}
-            </td>
-        </tr>
-        {/each}
-    </tbody>
-    </table>
-</div>
+        <label for="absenceHour">Hodina:</label>
+        <input type="text" id="absenceHour" placeholder="Důvod" bind:value={absenceHour}>
 
-<div class="modal {absenceFormVisible ? '' : 'hidden'}">
-    <label for="absenceDate">Datum:</label>
-    <input type="date" id="absenceDate" bind:value={absenceDate}>
+        <label for="isExcused">Omluvená:</label>
+        <input type="checkbox" id="isExcused" bind:checked={isExcused}>
 
-    <label for="absenceHour">Hodina:</label>
-    <input type="text" id="absenceHour" placeholder="např. 10:00 - 11:00" bind:value={absenceHour}>
-
-    <label for="isExcused">Omluvená:</label>
-    <input type="checkbox" id="isExcused" bind:checked={isExcused}>
-
-    <button class="btn" on:click={() => pridatAbsenci(absenceDate, absenceHour, isExcused)}>Uložit</button>
-    <button class="btn" on:click={zavritAbsenci}>Zavřít</button>
-</div>
+        <button class="btn" onclick={() => pridatAbsenci(absenceDate, absenceHour, isExcused)}>Uložit</button>
+        <button class="btn" onclick={zavritAbsenci}>Zavřít</button>
+    </div>
 </main>
 
 <style>
-    main{
+main{
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     padding: 20px;
     gap: 15px;
+    font-family: Arial, sans-serif;
 }
 
 .container {
@@ -119,9 +115,7 @@
     gap: 10px;
 }
 
-.form-group {
-    margin-bottom: 0;
-}
+
 
 label {
     display: block;
@@ -157,6 +151,29 @@ select, input[type="date"], input[type="text"], .btn {
     display: flex;
     justify-content: center;
     
+}
+table {
+    width: 100%;
+    max-width: 900px;
+    font-size: 25px;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 20px;
+    text-align: center;
+}
+
+th {
+    background-color: #007bff;
+    color: #fff;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
 }
 
 #absenceTable {
